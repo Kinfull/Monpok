@@ -306,7 +306,7 @@ def play_round(game: Game):
 
         consumed_turn = False
         while not consumed_turn:
-            action = input_handler("\nChoose your action!\n : ", ["Av", "Hp", "Move", "Sheet", "Stats"], str, "Try: 'Av' or 'Help'") 
+            action = input_handler("\nChoose your action!\n : ", ["Av", "Help" "Hp", "Move", "Sheet", "Stats"], str, "Try: 'Av' or 'Help'") 
             system("CLS")
             if action == "Av" or action == "Help":
                 print("Available actions:")
