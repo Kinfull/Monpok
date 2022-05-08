@@ -306,9 +306,9 @@ def play_round(game: Game):
 
         consumed_turn = False
         while not consumed_turn:
-            action = input_handler("\nChoose your action!\n : ", ["Av", "Hp", "Move", "Sheet", "Stats"]) 
+            action = input_handler("\nChoose your action!\n : ", ["Av", "Hp", "Move", "Sheet", "Stats"], str, "Try: 'Av' or 'Help'") 
             system("CLS")
-            if action == "Av":
+            if action == "Av" or action == "Help":
                 print("Available actions:")
                 print("    Av: Show Available action.")
                 print("    Hp: Get your Monpok's current Hp.")
@@ -415,7 +415,7 @@ def create_monpok(game: Game):
             game.player_list.append(RockMonpok(player_name, [120, 80, 60, 0, 30, 30]))
 
 
-def input_handler(input_message:str, expected_values:list=[], input_type=str):
+def input_handler(input_message:str, expected_values:list=[], input_type=str, error_message=""):
     # If the given input does not meet the specified requirenment they are prompted again.
 
     while True:
@@ -425,7 +425,7 @@ def input_handler(input_message:str, expected_values:list=[], input_type=str):
                 if variable in expected_values:
                     break
                 else:
-                    print("Input exeeded expected values.")
+                    print("Input exeeded expected values.", error_message)
             else:
                 break
         except ValueError:
