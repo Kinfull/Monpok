@@ -1,5 +1,5 @@
 # Monpok
-Monpok is a text-terminal based python game that connects to a website the website [keeraxm.rocks](https://www.keeraxm.rocks) which hosts a table of the results of all matches played. The website updates in realtime, no need to even refresh the site. Monpok is made as a school project and will not revice any updates once a grade has been set. There is also a wiki on [keeraxm.rocks/wiki](https://www.keeraxm.rocks/wiki) for any information about the game itself, how to play and Monpoks (type, stats etc.)
+Monpok is a text-terminal based python game that connects to a website the website [keeraxm.rocks](https://www.keeraxm.rocks) which hosts a table of the results of all matches played. The website updates in realtime, no need to even refresh the site. Monpok is made as a school project and will not revice any updates once a grade has been set.
 
 ## Installation
 Due to database authentication issues (I'm lazy), the program is currently not available to anyone but the creator.
