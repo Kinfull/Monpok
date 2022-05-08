@@ -2,15 +2,21 @@
 Monpok is a text-terminal based python game that connects to a website the website [keeraxm.rocks](https://www.keeraxm.rocks) which hosts a table of the results of all matches played. The website updates in realtime, no need to even refresh the site. Monpok is made as a school project and will not revice any updates once a grade has been set.
 
 ## Installation
-Due to database authentication issues (I'm lazy), the program is currently not available to anyone but the creator.
+Due to database authentication issues (I'm lazy), the full program is currently not available to anyone but the creator.
 
-However, if I ever to implement it or you would create your own database this is how you would do it:
+However, if I ever implement any sort of user authentication, then all you would need to do is: install the repo, open a terminal in that foler and type:
 
-Monpok uses [firebase/firestore](https://firebase.google.com/) to host all of its match data.<br>To be able to use the program, create a [virtual environment](https://docs.python.org/3/library/venv.html) in python.
 ```bash
-pip install google-cloud-firestore
+python -m venv venv
+venv/scripts/actiavte
+pip install -r requirements.txt
 ```
-After that you would need to log in and, done :) (Incase you want to use your own database you would need to create a service account and create an environment variable to the path of the service account file, refer to the [firebase documentation](https://firebase.google.com/docs) )
+Then to launch the program simply type:
+
+```bash
+python main.py
+```
+Monpok uses [firebase/firestore](https://firebase.google.com/) to host all of its match data. If you want, you can create your own firebase/firetore project to host it yourself. 
 
 ps. If you only want to play the game, just remove line 2, 292, 445-456. Then you will be able to launch the game as you would any python file, no prerequisites needed, not even a virtual environment.
 
