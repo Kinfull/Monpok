@@ -1,5 +1,4 @@
 import random
-from google.cloud import firestore
 from os import system
 from time import sleep
 import datetime
@@ -30,6 +29,7 @@ class Monpok:
  
     def get_hp(self):
         return self.hp
+        input_handler()
     
     def take_dmg(self, dmg: int):
         if self.hp[0] >= dmg:
@@ -445,15 +445,32 @@ def get_hit(accuracy):
 def push_to_database(winner, loser):
     # Save game data to database.
 
-    db = firestore.Client(project="sadgefarming")
-    db.collection(u"matches").document(datetime.datetime.now().strftime("%d:%m:%Y:%H:%M:%S")).set({
-        u"winner_name": winner.name,
-        u"winner_monpok": winner.type,
-        u"loser_name": loser.name,
-        u"loser_monpok": loser.type
-    })
+    # Checking if firebase is installed
+    try:
+        import firebase_admin
+        from firebase_admin import credentials
+        from firebase_admin import firestore
 
-    print("\n Game data saved.")
+    except ImportError:
+        print("ImportError.\n Couldn't upload game-data to database.\n Prerequisite firebase-admin not installed.")
+        return
+
+    # Upload to database if account-credentials are provided.
+    try:
+        cred = credentials.Certificate("service-account.json")
+        firebase_admin.initialize_app(cred)
+        db = firestore.client()
+
+        db.collection(u"matches").document(datetime.datetime.now().strftime("%d:%m:%Y:%H:%M:%S")).set({
+            u"winner_name": winner.name,
+            u"winner_monpok": winner.type,
+            u"loser_name": loser.name,
+            u"loser_monpok": loser.type
+        })
+        print("\n Game-data saved.")
+
+    except:
+        print("\n Error: Couldn't upload game to database.\n No valid account-credentials")
 
 if __name__ == "__main__":
     main()
