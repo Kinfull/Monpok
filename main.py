@@ -311,7 +311,7 @@ def play_round(game: Game):
         game (Game): Game object.
 
     Returns:
-        list: If a Monpok faints, return a list of [winner object, loser object]. Else: no return.
+        list: If a Monpok faints: return a list of [winner object, loser object]. Else: no return.
     """
 
     player_moves = []
@@ -498,7 +498,7 @@ def push_to_database(winner: Monpok, loser: Monpok):
         loser (Monpok): Loser Monpok object
     """
 
-    # Checking if firebase is installed
+    # Check if firebase is installed
     try:
         import firebase_admin
         from firebase_admin import credentials
