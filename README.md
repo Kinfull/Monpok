@@ -24,8 +24,8 @@ Monpok uses [firebase/firestore](https://firebase.google.com/) to host all of it
 The main() fucntion  dictates the structure of the program. The main function initializes the Game class and calls the create_monpok() function, after that the play_round() function is called, this is where the actual game is played out. This function gets called until the game is over (when someone faints) at which point the program calls the push_to_database() function which writes the match results to the database.
 
 ## To do
-- Implement user authentication and database sercurity rules, so it can actually be published.
-- Exand the roaster, add new Monpoks, add more Moves etc.
+- Implement user authentication, so the full program can actually be published.
+- Exand the roster, add new Monpoks, add more Moves etc.
 - Find a way to package the program, which automatically make a virtual environment and downloads all prerequisites.
 
 ## Contributing
