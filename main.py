@@ -21,11 +21,11 @@ class Monpok:
         self.moves = ["Basic"]
         self.basic = AtkMove("Basic", self)
         
-    def show_moves(self):
+    def show_moves(self, indent: str=""):
         # Print all available moves.
-        
-        for val, idx in enumerate(self.moves):
-            print(f"\{idx+1}: {val}")
+        print(f"{indent}{self.name}'s Moves:")
+        for idx, val in enumerate(self.moves):
+            print(f"  {indent}{idx+1}: {val}")
  
     def get_hp(self):
         return self.hp
@@ -314,7 +314,7 @@ def play_round(game: Game):
         list: If a Monpok faints: return [winner object, loser object]. Else: no return.
     """
 
-    player_moves = []
+    player_action = []
     player_one = game.player_list[0]
     player_two = game.player_list[1]
 
@@ -324,9 +324,9 @@ def play_round(game: Game):
     for player in game.player_list:
         print(f"\n{game.get_turn().name}'s Turn!")
 
-        consumed_turn = False
+        used_action = False
         while not consumed_turn:
-            action = input_handler("\nChoose your action!\n : ", ["Av", "Help" "Hp", "Move", "Sheet", "Stats"], "Try: 'Av' or 'Help'") 
+            action = input_handler("\nChoose your action!\n : ", ["Av", "Help" "Hp", "Move", "Sheet"], "Try: 'Av' or 'Help'") 
             system("CLS")
             if action == "Av" or action == "Help":
                 print("Available actions:")
@@ -334,7 +334,6 @@ def play_round(game: Game):
                 print("    Hp: Get your Monpok's current Hp.")
                 print("    Move: Use a move.")
                 print("    Sheet: Get your Monpok's base stats and available moves.")
-                print("    Stats: Get your Monpok's current stats")
 
             elif action == "Hp":
                 print(f"{player.name}'s Current hp: {player.get_hp()[0]}")    
@@ -342,31 +341,22 @@ def play_round(game: Game):
             elif action == "Sheet":
                 print(f"{player.name}'s Sheet:")
                 print(f"    Type: {player.type}")
-                print(f"    Hp: {player.hp[0]}")
-                print(f"    Attack: {player.attack[0]}")
-                print(f"    Defense: {player.defense[0]}")
-                print(f"    Sp_Attack: {player.sp_attack[0]}")
-                print(f"    Sp_Defense: {player.sp_defense[0]}")
-                print(f"    Speed: {player.speed[0]}")
-
-            elif action == "Stats":
-                print(f"{player.name}'s Stats:")
+                print()
                 print(f"    Hp: {player.hp[0] * stages[player.hp[1]]}")
                 print(f"    Attack: {player.attack[0] * stages[player.attack[1]]}")
                 print(f"    Defense: {player.defense[0] * stages[player.defense[1]]}")
                 print(f"    Sp_Attack: {player.sp_attack[0] * stages[player.sp_attack[1]]}")
                 print(f"    Sp_Defense: {player.sp_defense[0 ]* stages[player.sp_defense[1]]}")
                 print(f"    Speed: {player.speed[0] * stages[player.speed[1]]}")
+                print()
+                player.show_moves("    ")                
 
             elif action == "Move":
-                print(f"{player.name}'s Moves")
-                for idx, val in enumerate(player.moves):
-                    print(f"  {idx+1}: {val}")
-
+                player.show_moves()
                 move = input_handler(" : ", [i+1 for i in range(len(player.moves))], "", int)
-                player_moves.append(move)
+                player_action.append(move)
 
-                consumed_turn = True
+                used_action = True
 
             print()
 
@@ -380,7 +370,7 @@ def play_round(game: Game):
     print()
 
     if player_one.speed > player_two.speed:
-        player_one.use_move(player_moves[0], player_two)
+        player_one.use_move(player_action[0], player_two)
         print()
         sleep(1)
 
@@ -388,19 +378,19 @@ def play_round(game: Game):
         if check_faint(player_two):
             return player_one, player_two
 
-        player_two.use_move(player_moves[1], player_one)
+        player_two.use_move(player_action[1], player_one)
         
         if check_faint(player_one):
             return player_two, player_one
     else:
-        player_two.use_move(player_moves[1], player_one)
+        player_two.use_move(player_action[1], player_one)
         print()
         sleep(1)
 
         if check_faint(player_one):
             return player_two, player_one
             
-        player_one.use_move(player_moves[0], player_two)
+        player_one.use_move(player_action[0], player_two)
 
         if check_faint(player_two):
             return player_one, player_two
@@ -436,7 +426,7 @@ def create_monpok(game: Game):
     for i in range(2):
         system("CLS")
         print(f"Player {i+1}: Choose your Monpok!\n\t1. Fire\n\t2. Dark\n\t3. Rock")
-        player_choice = input_handler(" : ", ["1", "2", "3"], "", int)
+        player_choice = input_handler(" : ", [1, 2, 3], "", int)
         player_name = input_handler("Name your Monpok: ")
         if player_choice == 1:
             game.player_list.append(FireMonpok(player_name, [85, 30, 50, 75, 40, 65]))
