@@ -26,7 +26,7 @@ The main() fucntion  dictates the structure of the program. The main function in
 ## To do
 - Implement user authentication, so the full program can actually be published.
 - Exand the roster, add new Monpoks, add more Moves etc.
-- Find a way to package the program, which automatically make a virtual environment and downloads all prerequisites.
+- Find a way to package the program which automatically make a virtual environment and downloads all prerequisites.
 
 ## Contributing
 Don't. You can download and edit the code all you want, but all pull requests will be denied since the school project does not allow any other contributors except myself.

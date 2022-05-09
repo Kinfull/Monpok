@@ -303,6 +303,7 @@ def main():
 
         sleep(1)
         push_to_database(winner, loser)
+    input_handler("\n\nPress enter to exit.")
 
 def play_round(game: Game):
     """Players take turns deciding an action for thire turn. After making a decition the round is played out, whoever has speed is greater goes first.
@@ -365,7 +366,7 @@ def play_round(game: Game):
 
     system("CLS")
     sleep(0.5)
-    print("Round Start!\n")
+    print(f"Round {game.get_round()} Start!\n")
     sleep(1)
     print()
 
@@ -495,7 +496,12 @@ def push_to_database(winner: Monpok, loser: Monpok):
         from firebase_admin import firestore
 
     except ImportError:
-        print("ImportError.\n Couldn't upload game-data to database.\n Prerequisite firebase-admin not installed.")
+        print()
+        print("ImportError.")
+        sleep(1)
+        print("Couldn't upload game-data to database.")
+        sleep(1)
+        print("Prerequisite firebase-admin not installed.")
         return
 
     # Upload to database if account-credentials are provided.
