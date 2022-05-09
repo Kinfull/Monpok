@@ -311,7 +311,7 @@ def play_round(game: Game):
         game (Game): Game object.
 
     Returns:
-        list: If a Monpok faints: return a list of [winner object, loser object]. Else: no return.
+        list: If a Monpok faints: return [winner object, loser object]. Else: no return.
     """
 
     player_moves = []
