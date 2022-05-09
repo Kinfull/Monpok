@@ -405,13 +405,13 @@ def create_monpok(game: Game):
     for i in range(2):
         system("CLS")
         print(f"Player {i+1}: Choose your Monpok!\n\t1. Fire\n\t2. Dark\n\t3. Rock")
-        player_choice = input_handler(" : ", [1, 2, 3], int)
+        player_choice = input_handler(" : ", ["1", "2", "3", "Fire", "Dark", "Rock"])
         player_name = input_handler("Name your Monpok: ")
-        if player_choice == 1:
+        if player_choice == "1" or player_choice == "Fire":
             game.player_list.append(FireMonpok(player_name, [85, 30, 50, 75, 40, 65]))
-        elif player_choice == 2:
+        elif player_choice == "2" or player_choice == "Dark":
             game.player_list.append(DarkMonpok(player_name, [90, 40, 65, 70, 60, 50]))
-        elif player_choice == 3:
+        elif player_choice == "3" or player_choice == "Rock":
             game.player_list.append(RockMonpok(player_name, [120, 80, 60, 0, 30, 30]))
 
 
