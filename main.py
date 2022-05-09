@@ -3,7 +3,7 @@ from os import system
 from time import sleep
 import datetime
 
-# Stage modifires.
+# Stage modifires. Used to modify the stats of a Monpok.
 stages = [1, 1.5, 2, 2.5, 3, 3.5, 4, 0.66, 0.5, 0.4, 0.33, 0.28, 0.25]
 
 class Monpok:
@@ -29,7 +29,6 @@ class Monpok:
  
     def get_hp(self):
         return self.hp
-        input_handler()
     
     def take_dmg(self, dmg: int):
         if self.hp[0] >= dmg:
@@ -38,7 +37,11 @@ class Monpok:
             self.hp = (0, self.hp[1])
 
     def use_basic(self, target):
-        # Target: Monpok (can't reference to itself)
+        """Use basic attack move. 
+
+        Args:
+            target (Monpok): Target of the attack.
+        """
 
         dmg = self.basic.use_move(target, "attack")
         if dmg > 0:
@@ -177,6 +180,16 @@ class AtkMove(Move):
         self.user = user
 
     def use_move(self, target: Monpok, stat: str):
+        """Determins the dmg of used move based on stats.
+
+        Args:
+            target (Monpok): Target object.
+            stat (str): Stat used for attack.
+
+        Returns:
+            int: damage the target will take.
+        """
+
         if stat == "attack":
             if target.defense <= self.user.attack:
                 dmg = int(self.user.attack[0] * stages[self.user.attack[1]]) - int(target.defense[0] * stages[target.defense[1]])
@@ -257,7 +270,7 @@ class Game:
         self.round += 1
 
     def is_running(self):
-        # If game is active: Everyone is alive.
+        # If game is running: Everyone is alive.
 
         if self.player_list[0].get_hp()[0] == 0 or self.player_list[1].get_hp()[0] == 0:
             return False
@@ -266,12 +279,12 @@ class Game:
 
 
 def main():
-    # Handles structre of how the game plays
+    # Manages structure of the game.
+
     game = Game()
     create_monpok(game)
     game.init_game()
     
-    #push_to_database(game.player_list[0], game.player_list[1])
     system("CLS")
     print("\t--Game Start--")
 
@@ -292,7 +305,14 @@ def main():
         push_to_database(winner, loser)
 
 def play_round(game: Game):
-    # Each player makes a desicion then the round is played out, who ever has the most speed goes first.
+    """Players take turns deciding an action for thire turn. After making a decition the round is played out, whoever has speed is greater goes first.
+
+    Args:
+        game (Game): Game object.
+
+    Returns:
+        list: If a Monpok faints, return a list of [winner object, loser object]. Else: no return.
+    """
 
     player_moves = []
     player_one = game.player_list[0]
@@ -306,7 +326,7 @@ def play_round(game: Game):
 
         consumed_turn = False
         while not consumed_turn:
-            action = input_handler("\nChoose your action!\n : ", ["Av", "Help" "Hp", "Move", "Sheet", "Stats"], str, "Try: 'Av' or 'Help'") 
+            action = input_handler("\nChoose your action!\n : ", ["Av", "Help" "Hp", "Move", "Sheet", "Stats"], "Try: 'Av' or 'Help'") 
             system("CLS")
             if action == "Av" or action == "Help":
                 print("Available actions:")
@@ -343,7 +363,7 @@ def play_round(game: Game):
                 for idx, val in enumerate(player.moves):
                     print(f"  {idx+1}: {val}")
 
-                move = input_handler(" : ", [i+1 for i in range(len(player.moves))], int)
+                move = input_handler(" : ", [i+1 for i in range(len(player.moves))], "", int)
                 player_moves.append(move)
 
                 consumed_turn = True
@@ -390,8 +410,15 @@ def play_round(game: Game):
 
     game.increment_round()
 
-def check_faint(player):
-    # Check if monpok has fainted.
+def check_faint(player: Monpok):
+    """Check if Monpok object has fainted i.e hp is 0
+
+    Args:
+        player (Monpok): Monpok object to check.
+
+    Returns:
+        bool: True if Monpok has fainted.
+    """
 
     if player.hp[0] * stages[player.hp[1]] == 0:
         print(f"\n {player.name} faints!")
@@ -400,23 +427,37 @@ def check_faint(player):
         return True
     
 def create_monpok(game: Game):
-    # Players take turns choosing what Monpok to play
+    """Players take turns creating a Monpok object.
+
+    Args:
+        game (Game): Game object.
+    """
 
     for i in range(2):
         system("CLS")
         print(f"Player {i+1}: Choose your Monpok!\n\t1. Fire\n\t2. Dark\n\t3. Rock")
-        player_choice = input_handler(" : ", ["1", "2", "3", "Fire", "Dark", "Rock"])
+        player_choice = input_handler(" : ", ["1", "2", "3"], "", int)
         player_name = input_handler("Name your Monpok: ")
-        if player_choice == "1" or player_choice == "Fire":
+        if player_choice == 1:
             game.player_list.append(FireMonpok(player_name, [85, 30, 50, 75, 40, 65]))
-        elif player_choice == "2" or player_choice == "Dark":
+        elif player_choice == 2:
             game.player_list.append(DarkMonpok(player_name, [90, 40, 65, 70, 60, 50]))
-        elif player_choice == "3" or player_choice == "Rock":
+        elif player_choice == 3:
             game.player_list.append(RockMonpok(player_name, [120, 80, 60, 0, 30, 30]))
 
 
-def input_handler(input_message:str, expected_values:list=[], input_type=str, error_message=""):
-    # If the given input does not meet the specified requirenment they are prompted again.
+def input_handler(input_message: str="", expected_values: list=[], error_message: str="", input_type: any=str, ):
+    """Manage inputs, expands the functionanlity of python's built in input() function.
+
+    Args:
+        input_message (str, optional): String to display on input.
+        expected_values (list, optional): Input must be one of the items in the list or the user will be promted again. Defaults to [].
+        error_message (str, optional): If input is one of the expected_values display the string. Defaults to "".
+        input_type (any, optional): Forced typing of input, user will be promted again on ValueError. Defaults to str.
+
+    Returns:
+        any: Returns the user input.
+    """
 
     while True:
         try:
@@ -433,8 +474,15 @@ def input_handler(input_message:str, expected_values:list=[], input_type=str, er
     return variable
 
 
-def get_hit(accuracy):
-    # Get random hit chans
+def get_hit(accuracy: float):
+    """Generate hit within specified accuracy
+
+    Args:
+        accuracy (float): Hit chance.
+
+    Returns:
+        bool: True on hit, False on miss.
+    """
 
     roll = random.randint(0,11)/10
     if roll <= accuracy:
@@ -442,8 +490,13 @@ def get_hit(accuracy):
     else:
         return False
 
-def push_to_database(winner, loser):
-    # Save game data to database.
+def push_to_database(winner: Monpok, loser: Monpok):
+    """Tries to upload to firestore database specified in service-account.json
+
+    Args:
+        winner (Monpok): Winner Monpok object
+        loser (Monpok): Loser Monpok object
+    """
 
     # Checking if firebase is installed
     try:
