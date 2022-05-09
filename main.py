@@ -1,7 +1,7 @@
-import random
+from datetime import datetime
+from random import randint
 from os import system
 from time import sleep
-import datetime
 
 # Stage modifires. Used to modify the stats of a Monpok.
 stages = [1, 1.5, 2, 2.5, 3, 3.5, 4, 0.66, 0.5, 0.4, 0.33, 0.28, 0.25]
@@ -134,8 +134,8 @@ class RockMonpok(Monpok):
     def __init__(self, name: str, stab: list):
         super().__init__(name, stab)
         self.type = "Rock"
-        self.rock_throw = AtkMove("Rock throw", self)
-        self.harden_skin = BuffMove("Harden skin", "defense", 1)
+        self.rock_throw = AtkMove("Rock Throw", self)
+        self.harden_skin = BuffMove("Harden Skin", "defense", 1)
         self.moves.extend([self.rock_throw.name, self.harden_skin.name])
 
     def use_rock_throw(self, target: Monpok):
@@ -474,7 +474,7 @@ def get_hit(accuracy: float):
         bool: True on hit, False on miss.
     """
 
-    roll = random.randint(0,11)/10
+    roll = randint(0,11)/10
     if roll <= accuracy:
         return True
     else:
@@ -504,7 +504,7 @@ def push_to_database(winner: Monpok, loser: Monpok):
         firebase_admin.initialize_app(cred)
         db = firestore.client()
 
-        db.collection(u"matches").document(datetime.datetime.now().strftime("%d:%m:%Y:%H:%M:%S")).set({
+        db.collection(u"matches").document(datetime.now().strftime("%d:%m:%Y:%H:%M:%S")).set({
             u"winner_name": winner.name,
             u"winner_monpok": winner.type,
             u"loser_name": loser.name,
