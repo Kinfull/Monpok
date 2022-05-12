@@ -9,7 +9,7 @@ stages = [1, 1.5, 2, 2.5, 3, 3.5, 4, 0.66, 0.5, 0.4, 0.33, 0.28, 0.25]
 class Monpok:
     # General Monpok class.
 
-    def __init__(self, name: str, stab: list):
+    def __init__(self, name: str, stab: list) -> None:
         self.name = name
         self.stab = stab
         self.hp = (stab[0], 0)
@@ -21,22 +21,22 @@ class Monpok:
         self.moves = ["Basic"]
         self.basic = AtkMove("Basic", self)
         
-    def show_moves(self, indent: str=""):
+    def show_moves(self, indent: str="") -> None:
         # Print all available moves.
         print(f"{indent}{self.name}'s Moves:")
         for idx, val in enumerate(self.moves):
             print(f"  {indent}{idx+1}: {val}")
  
-    def get_hp(self):
+    def get_hp(self) -> int:
         return self.hp
     
-    def take_dmg(self, dmg: int):
+    def take_dmg(self, dmg: int) -> None:
         if self.hp[0] >= dmg:
             self.hp = (self.hp[0] * self.hp[1] - dmg, self.hp[1])
         else:
             self.hp = (0, self.hp[1])
 
-    def use_basic(self, target):
+    def use_basic(self, target) -> None:
         """Use basic attack move. 
 
         Args:
@@ -56,14 +56,14 @@ class Monpok:
 class FireMonpok(Monpok):
     # Fire-themed monpok.
 
-    def __init__(self, name: str, stab: list):
+    def __init__(self, name: str, stab: list) -> None:
         super().__init__(name, stab)
         self.type = "Fire"
         self.fireball = AtkMove("Fireball", self)
         self.combustion = BuffMove("Combustion", "sp_attack", 1)
         self.moves.extend([self.fireball.name, self.combustion.name])
 
-    def use_fireball(self, target: Monpok):
+    def use_fireball(self, target: Monpok) -> None:
         dmg = self.fireball.use_move(target, "sp_attack")
         if dmg > 0:
             target.take_dmg(dmg)
@@ -73,13 +73,13 @@ class FireMonpok(Monpok):
             sleep(1)
             print("{target.name}'s Sp_Defense stat is too high!")
     
-    def use_combustion(self):
+    def use_combustion(self) -> None:
         self.combustion.apply_buff(self)
         print(f"{self.name} is on fire:", end=" ")
         sleep(1)
         print(f"sp_attack increased by {self.combustion.delta_stage} stages!")
         
-    def use_move(self, move: int, target: Monpok):
+    def use_move(self, move: int, target: Monpok) -> None:
         # Manages what move to use.
 
         if move == 1:
@@ -92,14 +92,14 @@ class FireMonpok(Monpok):
 class DarkMonpok(Monpok):
     # Like fire, but dark.
 
-    def __init__(self, name: str, stab: list):
+    def __init__(self, name: str, stab: list) -> None:
         super().__init__(name, stab)
         self.type = "Dark"
         self.shadowbolt = AtkMove("Shadowbolt", self)
         self.curse = BuffMove("Curse", "sp_attack", -1, 0.75)
         self.moves.extend([self.shadowbolt.name, self.curse.name])
 
-    def use_shadowbolt(self, target: Monpok):
+    def use_shadowbolt(self, target: Monpok) -> None:
         dmg = self.shadowbolt.use_move(target, "sp_attack")
         if dmg > 0:
             target.take_dmg(dmg)
@@ -109,7 +109,7 @@ class DarkMonpok(Monpok):
             sleep(1)
             print(f"{target.name}'s Sp_Defense stat is too high!")
 
-    def use_curse(self, target: Monpok):
+    def use_curse(self, target: Monpok) -> None:
         if get_hit(self.curse.accuracy):
             self.curse.apply_buff(target)
             print(f"{self.name} curses {target.name}:", end=" ")
@@ -118,7 +118,7 @@ class DarkMonpok(Monpok):
         else:
             print(f"{self.name} failed the curse!")
 
-    def use_move(self, move: int, target: Monpok):
+    def use_move(self, move: int, target: Monpok) -> None:
         # Manages what move to use.
 
         if move == 1:
@@ -131,14 +131,14 @@ class DarkMonpok(Monpok):
 class RockMonpok(Monpok):
     # Rocksolid.
 
-    def __init__(self, name: str, stab: list):
+    def __init__(self, name: str, stab: list) -> None:
         super().__init__(name, stab)
         self.type = "Rock"
         self.rock_throw = AtkMove("Rock Throw", self)
         self.harden_skin = BuffMove("Harden Skin", "defense", 1)
         self.moves.extend([self.rock_throw.name, self.harden_skin.name])
 
-    def use_rock_throw(self, target: Monpok):
+    def use_rock_throw(self, target: Monpok) -> None:
         dmg = self.rock_throw.use_move(target, "sp_attack")
         if dmg > 0:
             target.take_dmg(dmg)
@@ -148,13 +148,13 @@ class RockMonpok(Monpok):
             sleep(1)
             print(f"{target.name}'s Sp_Defense stat is too high!")
     
-    def use_harden_skin(self):
+    def use_harden_skin(self) -> None:
         self.harden_skin.apply_buff(self)
         print(f"{self.name}'s skin hardens:", end=" ")
         sleep(1)
         print(f"defense stat increased by {self.harden_skin.delta_stage} stage!")
     
-    def use_move(self, move: int, target: Monpok):
+    def use_move(self, move: int, target: Monpok) -> None:
         # Manages what move to use.
 
         if move == 1:
@@ -167,7 +167,7 @@ class RockMonpok(Monpok):
 class Move:
     # Move class template.
 
-    def __init__(self, name: str, accuracy: float=1):
+    def __init__(self, name: str, accuracy: float=1) -> None:
         self.name = name
         self.accuracy = accuracy
 
@@ -175,11 +175,11 @@ class Move:
 class AtkMove(Move):
     # Attacking moves.
 
-    def __init__(self, name: str, user: Monpok, accuracy: float=1):
+    def __init__(self, name: str, user: Monpok, accuracy: float=1) -> None:
         super().__init__(name, accuracy)
         self.user = user
 
-    def use_move(self, target: Monpok, stat: str):
+    def use_move(self, target: Monpok, stat: str) -> int:
         """Determins the dmg of used move based on stats.
 
         Args:
@@ -207,12 +207,12 @@ class AtkMove(Move):
 class BuffMove(Move):
     # Handles buff moves.
 
-    def __init__(self, name: str, stat: str, delta_stage: int, accuracy: float=1):
+    def __init__(self, name: str, stat: str, delta_stage: int, accuracy: float=1) -> None:
         super().__init__(name, accuracy)
         self.stat = stat
         self.delta_stage = delta_stage
     
-    def apply_buff(self, target: Monpok):
+    def apply_buff(self, target: Monpok) -> None:
         if self.stat == "hp":
             target.hp = (target.hp[0], target.hp[1] + self.delta_stage)
         elif self.stat == "attack":
@@ -226,7 +226,7 @@ class BuffMove(Move):
         elif self.stat == "speed":
             target.speed = (target.speed[0], target.speed[1] + self.delta_stage)
 
-    def remove_buff(self, target: Monpok):
+    def remove_buff(self, target: Monpok) -> None:
         if self.stat == "hp":
             target.hp = (target.hp[0], target.hp[1] - self.delta_stage)
         elif self.stat == "attack":
@@ -244,32 +244,32 @@ class BuffMove(Move):
 class Game:
     # Manages the game.
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.player_list = []
         self.round = 0
 
-    def init_game(self):
+    def init_game(self) -> None:
         # Initializes a game: chooses who starts and starts the round counter.
 
         self.turn = self.player_list[0]
         self.increment_round()
     
-    def get_turn(self):
+    def get_turn(self) -> Monpok:
         return self.turn
 
-    def change_turn(self):
+    def change_turn(self) -> None:
         if self.turn == self.player_list[0]:
             self.turn = self.player_list[1]
         else:
             self.turn = self.player_list[0]
 
-    def get_round(self):
+    def get_round(self) -> int:
         return self.round
     
-    def increment_round(self):
+    def increment_round(self) -> None:
         self.round += 1
 
-    def is_running(self):
+    def is_running(self) -> bool:
         # If game is running: Everyone is alive.
 
         if self.player_list[0].get_hp()[0] == 0 or self.player_list[1].get_hp()[0] == 0:
@@ -305,7 +305,8 @@ def main():
         push_to_database(winner, loser)
     input_handler("\n\nPress enter to exit.")
 
-def play_round(game: Game):
+
+def play_round(game: Game) -> list:
     """Players take turns deciding an action for thire turn. After making a decition the round is played out, whoever has speed is greater goes first.
 
     Args:
@@ -374,7 +375,6 @@ def play_round(game: Game):
         player_one.use_move(player_action[0], player_two)
         print()
         sleep(1)
-
         # If monpok has fainted return winner, loser.
         if check_faint(player_two):
             return player_one, player_two
@@ -387,21 +387,18 @@ def play_round(game: Game):
         player_two.use_move(player_action[1], player_one)
         print()
         sleep(1)
-
         if check_faint(player_one):
             return player_two, player_one
             
         player_one.use_move(player_action[0], player_two)
-
         if check_faint(player_two):
             return player_one, player_two
 
     sleep(1.5)
     input_handler("\n Press Enter button to continue.")
-
     game.increment_round()
 
-def check_faint(player: Monpok):
+def check_faint(player: Monpok) -> bool:
     """Check if Monpok object has fainted i.e hp is 0
 
     Args:
@@ -416,8 +413,10 @@ def check_faint(player: Monpok):
         sleep(1)
         input_handler("\n  Press Enter button to continue.")
         return True
+    else:
+        return False
     
-def create_monpok(game: Game):
+def create_monpok(game: Game) -> None:
     """Players take turns creating a Monpok object.
 
     Args:
@@ -437,7 +436,7 @@ def create_monpok(game: Game):
             game.player_list.append(RockMonpok(player_name, [120, 80, 60, 0, 30, 30]))
 
 
-def input_handler(input_message: str="", expected_values: list=[], error_message: str="", input_type: any=str, ):
+def input_handler(input_message: str="", expected_values: list=[], error_message: str="", input_type: any=str, ) -> any:
     """Manage inputs, expands the functionanlity of python's built in input() function.
 
     Args:
@@ -452,20 +451,21 @@ def input_handler(input_message: str="", expected_values: list=[], error_message
 
     while True:
         try:
-            variable = input_type(input(input_message).capitalize().strip())
-            if expected_values != []:
-                if variable in expected_values:
-                    break
-                else:
-                    print("Input exeeded expected values.", error_message)
-            else:
+            user_input = input_type(input(input_message).capitalize().strip())
+            
+            if expected_values == []:
                 break
+            if user_input in expected_values:
+                break
+            else:
+                print("Input exeeded expected values.", error_message)
+    
         except ValueError:
             print("ValueError.")
-    return variable
+    return user_input
 
 
-def get_hit(accuracy: float):
+def get_hit(accuracy: float) -> bool:
     """Generate hit within specified accuracy
 
     Args:
@@ -481,7 +481,7 @@ def get_hit(accuracy: float):
     else:
         return False
 
-def push_to_database(winner: Monpok, loser: Monpok):
+def push_to_database(winner: Monpok, loser: Monpok) -> None:
     """Tries to upload to firestore database specified in service-account.json
 
     Args:
