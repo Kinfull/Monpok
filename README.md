@@ -14,6 +14,8 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+The package manager pip can be installed [here](https://pypi.org/project/pip/) 
+
 To launch the program simply type:
 ```bash
 python main.py
@@ -21,7 +23,7 @@ python main.py
 Monpok uses [firebase/firestore](https://firebase.google.com/) to host all of its match data. If you want, you can create your own firebase/firetore project to upload game-data youself, modify any code as you see fit.
 
 ## Usage
-The main() fucntion  dictates the structure of the program. The main function initializes the Game class and calls the create_monpok() function, after that the play_round() function is called, this is where the actual game is played out and gets called until the game is over (when someone faints) at which point the program calls the push_to_database() function which writes the match results to the database.
+The main() fucntion  dictates the structure of the program. The main function initializes the Game class and calls the create_monpok() function, after that the play_round() function is called, this is where the actual game is played out and gets called until the game is over (when someone faints) at which point the program calls the push_to_database() function which tries writes the match results to the database and exits. If the a connection can not be made to the database due to any issue (libary not installed, no valid credentials, no internet etc) the program exits.
 
 ## To do
 - Implement user authentication, so the full program can actually be published.
