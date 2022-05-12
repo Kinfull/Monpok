@@ -332,7 +332,7 @@ def play_round(game: Game) -> list:
             system("CLS")
             if action == "Av" or action == "Help":
                 print("Available actions:")
-                print("    Av: Show Available action.")
+                print("    Av/Help: Show Available action.")
                 print("    Hp: Get your Monpok's current Hp.")
                 print("    Move: Use a move.")
                 print("    Sheet: Get your Monpok's base stats and available moves.")
