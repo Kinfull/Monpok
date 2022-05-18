@@ -88,7 +88,8 @@ class FireMonpok(Monpok):
             self.use_fireball(target)
         elif move == 3:
             self.use_combustion()
-        
+
+
 class DarkMonpok(Monpok):
     # Like fire, but dark.
 
@@ -128,6 +129,7 @@ class DarkMonpok(Monpok):
         elif move == 3:
             self.use_curse(target)
 
+
 class RockMonpok(Monpok):
     # Rocksolid.
 
@@ -163,6 +165,7 @@ class RockMonpok(Monpok):
             self.use_rock_throw(target)
         elif move == 3:
             self.use_harden_skin()
+
 
 class Move:
     # Move class template.
@@ -305,7 +308,6 @@ def main():
         push_to_database(winner, loser)
     input_handler("\n\nPress enter to exit.")
 
-
 def play_round(game: Game) -> list:
     """Players take turns deciding an action for thire turn. After making a decition the round is played out, whoever has speed is greater goes first.
 
@@ -435,7 +437,6 @@ def create_monpok(game: Game) -> None:
         elif player_choice == 3:
             game.player_list.append(RockMonpok(player_name, [120, 80, 60, 0, 30, 30]))
 
-
 def input_handler(input_message: str="", expected_values: list=[], error_message: str="", input_type: any=str, ) -> any:
     """Manage inputs, expands the functionanlity of python's built in input() function.
 
@@ -463,7 +464,6 @@ def input_handler(input_message: str="", expected_values: list=[], error_message
         except ValueError:
             print("ValueError.")
     return user_input
-
 
 def get_hit(accuracy: float) -> bool:
     """Generate hit within specified accuracy
